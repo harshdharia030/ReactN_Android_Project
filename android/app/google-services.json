@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "217688928504",
+    "project_id": "login-signup-adb20",
+    "storage_bucket": "login-signup-adb20.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217688928504:android:64728a34032874d1c80b0d",
+        "android_client_info": {
+          "package_name": "com.frn_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217688928504-jhgbjv2c8hrghalfd8qmf5d9emr1s07b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjGwoTIYCKzUEnTBOFEYSWDmRTZRbnSA8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217688928504-jhgbjv2c8hrghalfd8qmf5d9emr1s07b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
