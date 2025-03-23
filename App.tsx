@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Ensure useState and useEffect are imported
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -6,7 +6,8 @@ import LoginScreen from './src/screen/LoginScreen';
 import SignupScreen from './src/screen/SignupScreen';
 import LoginTwoScreen from './src/screen/LoginTwoScreen';
 import auth from '@react-native-firebase/auth'; // Import Firebase Authentication
-
+import database from '@react-native-firebase/database'; 
+import firestore from '@react-native-firebase/firestore';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,9 +40,10 @@ const App = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {
          <>
-            <Stack.Screen name="LoginTwo" component={LoginTwoScreen} />
+            
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Signup" component={SignupScreen} />
+            <Stack.Screen name="LoginTwo" component={LoginTwoScreen} />
           </>
         }
       </Stack.Navigator>
@@ -49,7 +51,6 @@ const App = () => {
   );
 };
 
-export default App;
 
 const styles = StyleSheet.create({
   container: {
@@ -57,4 +58,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});  
+});
+export default App;

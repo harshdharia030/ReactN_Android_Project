@@ -1,39 +1,50 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Alert } from 'react-native'; 
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Switch, Alert, Modal } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth'; // Import Firebase Authentication
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Import Ionicons for the back arrow
-
 
 const LoginTwoScreen = () => {
   const [mobile, setMobile] = useState(''); // For storing email/mobile
   const [password, setPassword] = useState(''); // For storing password
   const [keepLoggedIn, setKeepLoggedIn] = useState(false); // For "Keep me logged in" toggle
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false); // Modal visibility for Forgot Password
+  const [emailForReset, setEmailForReset] = useState(''); // For storing email to send password reset link
   const navigation = useNavigation();
 
+  // Handle sign-in
   const handleSignIn = async () => {
     try {
-      // Firebase login with email and password (using mobile as email)
       const userCredential = await auth().signInWithEmailAndPassword(mobile, password);
       console.log('User signed in:', userCredential.user);
 
-      // Optionally, handle "keep logged in" feature
       if (keepLoggedIn) {
         auth().setPersistence(auth.Auth.Persistence.LOCAL); // Session persists across app restarts
       } else {
         auth().setPersistence(auth.Auth.Persistence.SESSION); // Session expires after closing the app
       }
 
-      // Navigate to the next screen after successful login
-      navigation.navigate('Home'); // Replace 'Home' with the actual screen you want to navigate to
+      navigation.navigate('Home'); // Navigate to Home screen after successful login
     } catch (error) {
       console.error('Error signing in:', error);
-      // Show an alert with the error message
       Alert.alert('Login Error', error.message);
     }
   };
+
+  // Handle password reset
+  const handleForgotPassword = async () => {
+    try {
+      await auth().sendPasswordResetEmail(emailForReset);
+      Alert.alert('Password Reset', 'A password reset link has been sent to your email.');
+      setShowForgotPasswordModal(false); // Close the modal after successful password reset
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      Alert.alert('Reset Error', error.message);
+    }
+  };
+
   const handleBack = () => {
-    navigation.navigate('Signup'); // Navigate back to LoginScreen
+    navigation.navigate('Login'); // Navigate back to Signup screen
   };
 
   return (
@@ -44,9 +55,10 @@ const LoginTwoScreen = () => {
         style={styles.input}
         placeholder="Mobile number*"
         value={mobile}
-        onChangeText={setMobile} // Update mobile state
+        onChangeText={setMobile}
         keyboardType="email-address" // Firebase uses email for login
       />
+      
       {/* Back Arrow */}
       <TouchableOpacity style={styles.backButton} onPress={handleBack}>
         <Text>
@@ -58,11 +70,11 @@ const LoginTwoScreen = () => {
         style={styles.input}
         placeholder="Password*"
         value={password}
-        onChangeText={setPassword} // Update password state
+        onChangeText={setPassword}
         secureTextEntry
       />
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => setShowForgotPasswordModal(true)}>
         <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
 
@@ -81,6 +93,36 @@ const LoginTwoScreen = () => {
       <Text style={styles.signupText}>
         Don't have an account? <Text style={styles.signupLink} onPress={() => navigation.navigate('Signup')}>SIGN UP</Text>
       </Text>
+
+      {/* Forgot Password Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showForgotPasswordModal}
+        onRequestClose={() => setShowForgotPasswordModal(false)}
+      >
+        <View style={styles.modalView}>
+          <Text style={styles.modalTitle}>Reset Your Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your email"
+            value={emailForReset}
+            onChangeText={setEmailForReset}
+          />
+          <TouchableOpacity
+            style={styles.resetButton}
+            onPress={handleForgotPassword}
+          >
+            <Text style={styles.resetButtonText}>Send Reset Link</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setShowForgotPasswordModal(false)}
+          >
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -145,6 +187,43 @@ const styles = StyleSheet.create({
   },
   signupLink: {
     color: '#7B3FD3',
+    fontWeight: 'bold',
+  },
+
+  // Modal Styles for Forgot Password
+  modalView: {
+    marginTop: '50%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 20,
+    fontWeight: 'bold',
+  },
+  resetButton: {
+    backgroundColor: '#7B3FD3',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+  },
+  resetButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  closeButton: {
+    backgroundColor: '#ccc',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  closeButtonText: {
+    color: '#fff',
     fontWeight: 'bold',
   },
 });

@@ -69,14 +69,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   signUpButton: {
-    backgroundColor: "#7B3FD3", // Button color
+    backgroundColor: "#7B3FD3",
     paddingVertical: 15,
     borderRadius: 25,
     marginHorizontal: 20,
     marginTop: 20,
   },
   loginButton: {
-    backgroundColor: "transparent", // Button color
+    backgroundColor: "transparent",
     borderColor: "#7B3FD3",
     borderWidth: 2,
     paddingVertical: 15,
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    color: "#FFFFFF", // Text color for SIGN UP button
+    color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "600",
   },
@@ -100,6 +100,6 @@ const styles = StyleSheet.create({
   },
   leftVectorImage: {
     height: 320,
-    width: 150, // Corrected typo here
+    width: 150,
   },
 });
